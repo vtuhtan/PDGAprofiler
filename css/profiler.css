@@ -1,0 +1,14 @@
+#PDGAprofiler-player-info {
+    position: fixed;
+    display: none;
+    overflow: hidden;
+    background-color: #f6f8f9EA;
+    background-position: right bottom;
+    border: 2px solid #03253e;
+    border-radius: 8px;
+    padding: 20px;
+    top: 10px;
+    left: 10px;
+    z-index: 99;
+}
+
