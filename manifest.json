@@ -1,6 +1,6 @@
 {
   "name": "PDGA Profiler",
-  "version": "0.1",
+  "version": "0.2",
   "description": "Get player info by hovering player's name",
   "manifest_version": 2,
   "background": {
@@ -9,7 +9,7 @@
   "content_scripts": [
     {
       "matches": ["https://www.pdga.com/*"],
-      "js": ["js/background.js"],
+      "js": ["js/background.js", "js/purify.min.js"],
       "css": ["css/profiler.css"],
       "run_at": "document_end"
     }
