@@ -7,6 +7,7 @@ let infoTimer;
 
 function getProfileAsync(playerId, callback)
 {
+  playerId = playerId.replace("http://", "https://");
   let xmlHttp = new XMLHttpRequest();
   xmlHttp.onreadystatechange = function () {
     if (xmlHttp.readyState === 4 && xmlHttp.status === 200)
@@ -23,7 +24,7 @@ function getProfileInfo(playerId, profileDiv, x, y) {
       let doc = domparser.parseFromString(playerProfile, 'text/html');
       let playerInfo = doc.getElementsByClassName("pane-player-player-info")[0].innerHTML || "";
       let profile = document.getElementById('PDGAprofiler-player-info');
-      profile.innerHTML = playerInfo;
+      profile.innerHTML = DOMPurify.sanitize(playerInfo);
 
       profileDiv.style.cssText = "display: block; top: unset; bottom: " + (innerHeight - y - 10) + "px; left: " + (x + 30) + "px;"; //show tooltip
     });
