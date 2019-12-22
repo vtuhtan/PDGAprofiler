@@ -56,7 +56,16 @@ function addListeners() {
     clearTimeout(infoTimer);
   });
 
-  let links = document.getElementsByTagName('a');
+  // let links = document.getElementsByTagName('a');
+
+  let players = $('a[href^="/player/"]');
+
+  for (var i=0; i<players.length; i++) {
+    let player = players[i];
+    player.addClass("PDGAprofiler-player");
+    player.
+  }
+
 
   for (var i=0; i<links.length; i++) {
     if (links[i].pathname.startsWith("/player/")) {

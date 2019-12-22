@@ -9,7 +9,7 @@
   "content_scripts": [
     {
       "matches": ["https://www.pdga.com/*"],
-      "js": ["js/background.js", "js/purify.min.js"],
+      "js": ["js/background.js", "js/purify.min.js", "js/jquery-3.4.1.min.js"],
       "css": ["css/profiler.css"],
       "run_at": "document_end"
     }
