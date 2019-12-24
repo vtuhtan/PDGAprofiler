@@ -1,79 +1,93 @@
 'use-strict';
 
-const HOVER_TIMEOUT = 300;
+const HOVER_TIMEOUT = 250;
 const INFO_TIMEOUT = 800;
+const PDGA_ORIGIN = "https://www.pdga.com";
 let hoverTimer;
 let infoTimer;
 
-function getProfileAsync(playerId, callback)
-{
-  playerId = playerId.replace("http://", "https://");
-  let xmlHttp = new XMLHttpRequest();
-  xmlHttp.onreadystatechange = function () {
-    if (xmlHttp.readyState === 4 && xmlHttp.status === 200)
-      callback(xmlHttp.responseText);
-  };
-  xmlHttp.open('GET', playerId, true);
-  xmlHttp.send(null);
-}
+const $ = window.jQuery;
 
-function getProfileInfo(playerId, profileDiv, x, y) {
+function getProfileInfo(playerId, x, y) {
   return function() {
-    getProfileAsync(playerId, function (playerProfile) {
-      let domparser = new DOMParser();
-      let doc = domparser.parseFromString(playerProfile, 'text/html');
-      let playerInfo = doc.getElementsByClassName("pane-player-player-info")[0].innerHTML || "";
-      let profile = document.getElementById('PDGAprofiler-player-info');
-      profile.innerHTML = DOMPurify.sanitize(playerInfo);
+    playerId = !playerId.startsWith(PDGA_ORIGIN)?PDGA_ORIGIN + playerId.replace('http://www.pdga.com', ''):playerId;
 
-      profileDiv.style.cssText = "display: block; top: unset; bottom: " + (innerHeight - y - 10) + "px; left: " + (x + 30) + "px;"; //show tooltip
-    });
+    $.ajax(playerId, {dataType: "html", method: "GET"})
+      .done(function (playerProfile) {
+        let doc = $(playerProfile);
+
+        //title section
+        let playerTitle = doc.find('h1#page-title')[0];
+        playerTitle.id = 'PDGAprofiler-player-name';
+        $('#PDGAprofiler-player-title').html(DOMPurify.sanitize(playerTitle.outerHTML || ""));
+
+        //photo section
+        let playerPhoto = doc.find('div.pane-player-photo-player-photo-pane')[0] || "";
+        let photoDiv = $('#PDGAprofiler-player-photo').html(DOMPurify.sanitize(playerPhoto.outerHTML || ""))
+        if (playerPhoto && $(playerPhoto).find('img').length>0) {
+          photoDiv.addClass('hasPhoto');
+        } else {
+          photoDiv.removeClass('hasPhoto');
+        }
+
+        //player info section
+        let playerInfo = doc.find(".pane-player-player-info")[0];
+        $('#PDGAprofiler-player-info').html(DOMPurify.sanitize(playerInfo.innerHTML || ""));
+
+        //show tooltip
+        $('#PDGAprofiler-player').css("display", "block").css("bottom", y).css("top", "unset").css("left", x);
+      })
+      .fail(function (error) {
+        console.error(error);
+      });
   }
 }
 
-function showPopup(playerId, profileDiv, x, y) {
-    clearTimeout(hoverTimer);
-    hoverTimer = setTimeout(getProfileInfo(playerId, profileDiv, x, y), HOVER_TIMEOUT);
+function showPopup(playerId, x, y) {
+  clearTimeout(hoverTimer);
+  hoverTimer = setTimeout(getProfileInfo(playerId, x, y), HOVER_TIMEOUT);
 }
 
 function dismissPopup(profileDiv) {
   return function() {
-    profileDiv.style.cssText = "display: none;"
+    profileDiv.hide();
   }
 }
 
 function addListeners() {
+  let profileDiv = $('<div/>').attr('id', 'PDGAprofiler-player')
+    .append($('<div/>').attr('id', 'PDGAprofiler-player-photo'))
+    .append($('<div/>').attr('id', 'PDGAprofiler-player-title'))
+    .append($('<div/>').addClass("panel-pane pane-horizontal-rule").append($('<hr/>')))
+    .append($('<div/>').attr('id', 'PDGAprofiler-player-info'));
+  profileDiv.appendTo(document.body);
 
-  let profileDiv = document.createElement('div');
-  profileDiv.id = 'PDGAprofiler-player-info';
-  document.body.appendChild(profileDiv);
+  profileDiv
+    .on("mouseleave", function() {
+      infoTimer = setTimeout(dismissPopup(profileDiv), INFO_TIMEOUT);
+    })
+    .on("mouseenter", function() {
+        clearTimeout(infoTimer);
+    });
 
-  profileDiv.addEventListener("mouseleave", function() {
-    infoTimer = setTimeout(dismissPopup(profileDiv), INFO_TIMEOUT);
-  });
+  let players = $('a[href^="/player/"]');
 
-  profileDiv.addEventListener("mouseenter", function() {
-    clearTimeout(infoTimer);
-  });
-
-  let links = document.getElementsByTagName('a');
-
-  for (var i=0; i<links.length; i++) {
-    if (links[i].pathname.startsWith("/player/")) {
-      let player = links[i];
-      player.classList.add("PDGAprofiler-player");
-
-      player.addEventListener("mouseenter",function(e) {
-        let x  = e.clientX;
-        let y = e.clientY;
-        showPopup(player.href, profileDiv, x, y);
-      });
-
-      player.addEventListener("mouseleave", function(){
-        clearTimeout(hoverTimer);
-        infoTimer = setTimeout(dismissPopup(profileDiv), INFO_TIMEOUT);
+  for (var i=0; i<players.length; i++) {
+    let player = $(players[i]);
+    player.addClass("PDGAprofiler-player");
+    player
+      .on("mouseenter",function(e) {
+        clearTimeout(infoTimer);
+        let x  = e.clientX + 30;
+        let y = $(window).height() - e.clientY - 10;
+        showPopup($(this).attr('href'), x, y);
       })
-    }
+      .on("mouseleave", function(){
+        clearTimeout(hoverTimer);
+        if (profileDiv.is(':visible')) {
+          infoTimer = setTimeout(dismissPopup(profileDiv), INFO_TIMEOUT);
+        }
+      });
   }
 }
 
