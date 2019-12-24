@@ -1,7 +1,8 @@
-#PDGAprofiler-player-info {
+#PDGAprofiler-player {
     position: fixed;
     display: none;
     overflow: hidden;
+    min-width: 300px;
     background-color: #f6f8f9F0;
     background-position: right bottom;
     border: 2px solid #03253e;
@@ -12,3 +13,12 @@
     z-index: 99;
 }
 
+#PDGAprofiler-player-photo {
+    float: right;
+}
+
+#PDGAprofiler-player-photo.hasPhoto {
+    margin-left: 12px;
+    border: 3px solid rgb(0, 141, 111);
+    border-radius: 5px;
+}
