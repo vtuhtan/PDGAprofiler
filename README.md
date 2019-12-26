@@ -1,6 +1,10 @@
 # PDGA Profiler
 Get player info by hovering player's name
 
+![PDGA Profiler](screenshots/PDGAprofiler.png?raw=true "PDGA Profiler")
+![PDGA Profiler on tournament page](screenshots/PDGAprofiler_tourament.png?raw=true "PDGA Profiler - Tournament Page")
+![PDGA Profiler on news page](screenshots/PDGAprofiler_news.png?raw=true "PDGA Profiler - News Page")
+
 ## Description
 Get player info by hovering player's name on any pdga.com page.
 
