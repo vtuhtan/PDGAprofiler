@@ -10,9 +10,10 @@ Have you ever wanted to know more about PDGA member from a tournament page? Find
 This extension helps disc golfers find more about their next opponent, friend or just a random PDGA member.
 
 ## Verions
-* 0.3.1 - Included Player name and profile picture. Improved stability. jQuery for code readability.
-* 0.2 - deployed version
-* 0.1 - initial releasse
+* 0.3.2 - Fixed the issue when tooltip is cut by the top of the page
+* 0.3.1 - Included Player name and profile picture. Improved stability. jQuery for code readability
+* 0.2 - First deployed version, included purify.js
+* 0.1 - Initial release
 
 ## Installation
 * Chrome: [PDGA Profiler Extension](https://chrome.google.com/webstore/detail/pdga-profiler/icgfcpkalamdllnmkjlhockaanelkkck) 

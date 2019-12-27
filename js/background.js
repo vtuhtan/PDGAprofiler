@@ -35,7 +35,10 @@ function getProfileInfo(playerId, x, y) {
         $('#PDGAprofiler-player-info').html(DOMPurify.sanitize(playerInfo.innerHTML || ""));
 
         //show tooltip
-        $('#PDGAprofiler-player').css("display", "block").css("bottom", y).css("top", "unset").css("left", x);
+        let playerTooltip = $('#PDGAprofiler-player');
+        playerTooltip.css("display", "block").css("bottom", y).css("top", "unset").css("left", x);
+        let offsetY = playerTooltip[0].getBoundingClientRect().y;
+        if (offsetY < 0) playerTooltip.css("bottom", y+offsetY);
       })
       .fail(function (error) {
         console.error(error);

@@ -1,6 +1,6 @@
 {
   "name": "PDGA Profiler",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Get player info by hovering player's name",
   "manifest_version": 2,
   "background": {
