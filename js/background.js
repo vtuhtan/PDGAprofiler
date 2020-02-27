@@ -74,6 +74,13 @@ function addListeners() {
     });
 
   let players = $('a[href^="/player/"]');
+  try {
+    players = players.filter(function() {
+      return this.pathname.match(/\/player\/\d+\/?(?!\S)/gs) && this.text.toUpperCase() != 'PLAYER STATISTICS'
+    });
+  } catch (e) {
+    console.error(e);
+  }
 
   for (var i=0; i<players.length; i++) {
     let player = $(players[i]);
