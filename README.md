@@ -15,6 +15,7 @@ Have you ever wanted to know more about PDGA member from a tournament page? Find
 This extension helps disc golfers find more about their next opponent, friend or just a random PDGA member.
 
 ## Verions
+* 0.3.4 - Fixed image sizing
 * 0.3.3 - Added maximum width constraint. Player profile disabled for tab navigation on profile page.
 * 0.3.2 - Fixed the issue when tooltip is cut by the top of the page
 * 0.3.1 - Included Player name and profile picture. Improved stability. jQuery for code readability
