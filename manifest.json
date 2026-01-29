@@ -1,15 +1,15 @@
 {
   "name": "PDGA Profiler",
-  "version": "0.3.4",
+  "version": "1.0.1",
   "description": "Get player info by hovering player's name",
-  "manifest_version": 2,
-  "background": {
-    "scripts": ["js/jquery-3.4.1.min.js", "js/background.js"]
-  },
+  "manifest_version": 3,
+  "host_permissions": [
+    "https://www.pdga.com/*"
+  ],
   "content_scripts": [
     {
       "matches": ["https://www.pdga.com/*"],
-      "js": ["js/jquery-3.4.1.min.js", "js/background.js", "js/purify.min.js"],
+      "js": ["js/purify.min.js", "js/profiler.js"],
       "css": ["css/profiler.css"],
       "run_at": "document_end"
     }
@@ -19,5 +19,22 @@
     "48": "icons/PDGAprofiler48.png",
     "32": "icons/PDGAprofiler32.png",
     "16": "icons/PDGAprofiler16.png"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{5b534e64-b8f2-438c-8f50-e8d70b93f6ff}",
+      "strict_min_version": "142.0",
+      "data_collection_permissions": {
+          "required": [
+            "websiteContent"
+          ],
+          "optional": [
+             "technicalAndInteraction"
+          ]
+         }
+    },
+    "safari": {
+      "strict_min_version": "14"
+    }
   }
 }
