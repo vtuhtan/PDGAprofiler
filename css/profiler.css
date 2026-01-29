@@ -28,3 +28,8 @@
     border: 3px solid rgb(0, 141, 111);
     border-radius: 5px;
 }
+
+/* Hide default PDGA tooltip */
+.tooltipster-base {
+    display: none;
+}
